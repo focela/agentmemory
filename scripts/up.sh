@@ -7,6 +7,11 @@ if ! command -v docker >/dev/null 2>&1; then
   exit 1
 fi
 
+if ! command -v curl >/dev/null 2>&1; then
+  error "curl not found — install curl before running make up"
+  exit 1
+fi
+
 if [ ! -f "$DOCKER_DIR/.env" ]; then
   cp "$ROOT/.env.example" "$DOCKER_DIR/.env"
   ok "Created docker/.env from .env.example"
@@ -20,7 +25,7 @@ info "Building and starting agentmemory..."
 compose up -d --build
 
 info "Waiting for health check..."
-for _ in $(seq 1 30); do
+for _ in $(seq 1 60); do
   curl -fsS http://127.0.0.1:3111/agentmemory/livez >/dev/null 2>&1 && break
   sleep 2
 done
