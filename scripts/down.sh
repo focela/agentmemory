@@ -6,7 +6,9 @@ source "$(dirname "$0")/lib.sh"
 PID_FILE="$ROOT/logs/.log.pid"
 if [ -f "$PID_FILE" ]; then
   OLD_PID="$(cat "$PID_FILE")"
-  kill "$OLD_PID" 2>/dev/null || true
+  if ps -p "$OLD_PID" -o args= 2>/dev/null | grep -q 'docker compose'; then
+    kill "$OLD_PID" 2>/dev/null || true
+  fi
   rm -f "$PID_FILE"
 fi
 

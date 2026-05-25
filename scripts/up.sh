@@ -25,9 +25,12 @@ for _ in $(seq 1 30); do
   sleep 2
 done
 
-curl -fsS http://127.0.0.1:3111/agentmemory/livez >/dev/null 2>&1 \
-  && ok "Server ready — Viewer: http://localhost:3113" \
-  || error "server not ready — run: make logs"
+if curl -fsS http://127.0.0.1:3111/agentmemory/livez >/dev/null 2>&1; then
+  ok "Server ready — Viewer: http://localhost:3113"
+else
+  error "server not ready — run: make logs"
+  exit 1
+fi
 
 echo ""
 SECRET="$(read_agentmemory_secret)"
@@ -49,7 +52,9 @@ find "$LOG_DIR" -name 'agentmemory-*.log' -mtime +14 -delete 2>/dev/null || true
 # Stop previous log watcher if still running
 if [ -f "$PID_FILE" ]; then
   OLD_PID="$(cat "$PID_FILE")"
-  kill "$OLD_PID" 2>/dev/null || true
+  if ps -p "$OLD_PID" -o args= 2>/dev/null | grep -q 'docker compose'; then
+    kill "$OLD_PID" 2>/dev/null || true
+  fi
   rm -f "$PID_FILE"
 fi
 
