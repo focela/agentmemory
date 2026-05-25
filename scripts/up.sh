@@ -42,7 +42,6 @@ fi
 
 # Daily log rotation — one file per day, retained for 14 days
 LOG_DIR="$ROOT/logs"
-LOG_FILE="$LOG_DIR/agentmemory-$(date '+%Y-%m-%d').log"
 PID_FILE="$LOG_DIR/.log.pid"
 mkdir -p "$LOG_DIR"
 
@@ -52,15 +51,25 @@ find "$LOG_DIR" -name 'agentmemory-*.log' -mtime +14 -delete 2>/dev/null || true
 # Stop previous log watcher if still running
 if [ -f "$PID_FILE" ]; then
   OLD_PID="$(cat "$PID_FILE")"
-  if ps -p "$OLD_PID" -o args= 2>/dev/null | grep -qF "$COMPOSE_FILE logs -f"; then
+  if ps -p "$OLD_PID" -o args= 2>/dev/null | grep -qF "$LOG_DIR"; then
+    pkill -P "$OLD_PID" 2>/dev/null || true
     kill "$OLD_PID" 2>/dev/null || true
   fi
   rm -f "$PID_FILE"
 fi
 
-nohup docker compose -f "$COMPOSE_FILE" logs -f --no-color --timestamps --no-log-prefix agentmemory >> "$LOG_FILE" 2>&1 &
+# Wrapper restarts docker logs at midnight to write to the correct day's file
+nohup bash -c "
+  while true; do
+    TODAY=\$(date '+%Y-%m-%d')
+    LOG_FILE='$LOG_DIR'/agentmemory-\${TODAY}.log
+    ln -sf agentmemory-\${TODAY}.log '$LOG_DIR/agentmemory.log'
+    docker compose -f '$COMPOSE_FILE' logs -f --no-color --timestamps --no-log-prefix agentmemory \
+      >> \"\$LOG_FILE\" 2>&1 &
+    INNER=\$!
+    while [ \"\$(date '+%Y-%m-%d')\" = \"\$TODAY\" ]; do sleep 30; done
+    kill \"\$INNER\" 2>/dev/null || true
+  done
+" &
 echo $! > "$PID_FILE"
-
-# Symlink for stable path: logs/agentmemory.log → today's file
-ln -sf "$(basename "$LOG_FILE")" "$LOG_DIR/agentmemory.log"
-info "Log file: $LOG_FILE"
+info "Log file: $LOG_DIR/agentmemory-$(date '+%Y-%m-%d').log"
