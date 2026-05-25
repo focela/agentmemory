@@ -1,0 +1,26 @@
+# HTTPS reverse proxy example for VPS/VM (Nginx + Let's Encrypt).
+# Replace memory.example.com and the Let's Encrypt cert paths.
+
+server {
+    listen 443 ssl http2;
+    server_name memory.example.com;
+
+    ssl_certificate     /etc/letsencrypt/live/memory.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/memory.example.com/privkey.pem;
+
+    location / {
+        proxy_pass http://127.0.0.1:3111;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 180s;
+    }
+}
+
+server {
+    listen 80;
+    server_name memory.example.com;
+    return 301 https://$host$request_uri;
+}
