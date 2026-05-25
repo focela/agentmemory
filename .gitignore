@@ -112,6 +112,9 @@ Session.vim
 !.vscode/tasks.json
 .vscode/
 
+# Claude Code local workspace
+.claude/
+
 #-----------------------------------------------------------------------------
 # THIRD-PARTY PLUGIN FILES
 #-----------------------------------------------------------------------------
@@ -127,10 +130,18 @@ fabric.properties
 #-----------------------------------------------------------------------------
 # Environment files with sensitive data
 .env
+.env.*
 .env.development
 .env.local
 .env.production
 .env.staging
+docker/.env
+docker/.env.server
+!.env.example
+
+# MCP configs with API keys
+.cursor/mcp.json
+.mcp.json
 
 # Files containing secrets that must not be committed
 *.crt
@@ -152,6 +163,10 @@ secrets/
 # Application writable runtime data
 writable/*
 !writable/.gitkeep
+
+# Container logs export
+logs/*
+!logs/.gitkeep
 
 # Application upload runtime data
 uploads/*
@@ -209,10 +224,12 @@ bower_components/
 node_modules/
 
 # Virtual environments
-.env/
 .venv/
 env/
 venv/
+
+# agentmemory local runtime
+.agentmemory/
 
 #-----------------------------------------------------------------------------
 # TESTING AND COVERAGE
