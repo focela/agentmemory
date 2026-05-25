@@ -64,7 +64,7 @@ nohup bash -c "
     TODAY=\$(date '+%Y-%m-%d')
     LOG_FILE='$LOG_DIR'/agentmemory-\${TODAY}.log
     ln -sf agentmemory-\${TODAY}.log '$LOG_DIR/agentmemory.log'
-    docker compose -f '$COMPOSE_FILE' logs -f --no-color --timestamps --no-log-prefix agentmemory \
+    docker compose -f '$COMPOSE_FILE' logs -f --no-color --timestamps --no-log-prefix --tail 0 agentmemory \
       >> \"\$LOG_FILE\" 2>&1 &
     INNER=\$!
     while [ \"\$(date '+%Y-%m-%d')\" = \"\$TODAY\" ]; do sleep 30; done
