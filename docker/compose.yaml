@@ -1,0 +1,53 @@
+name: agentmemory
+
+services:
+  agentmemory:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    # Localhost only — remote access via Nginx (HTTPS) or SSH tunnel.
+    # To expose publicly: change to "3111:3111" (requires AGENTMEMORY_SECRET + firewall).
+    ports:
+      - "127.0.0.1:3111:3111"
+      - "127.0.0.1:3113:13113"
+    volumes:
+      - agentmemory-data:/data
+    # LLM provider config. Created by make up; required: false needs Compose 2.24+.
+    # Manual: cp config/server.env.example docker/.env.server
+    env_file:
+      - path: .env.server
+        required: false
+    environment:
+      AGENTMEMORY_DATA_DIR: /data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:3111/agentmemory/livez || exit 1"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Viewer listens on 127.0.0.1:3113 inside container (loopback only).
+  # socat binds 0.0.0.0:13113 and forwards traffic to 127.0.0.1:3113.
+  viewer-proxy:
+    image: alpine/socat
+    network_mode: "service:agentmemory"
+    depends_on:
+      agentmemory:
+        condition: service_healthy
+    restart: unless-stopped
+    command: ["TCP-LISTEN:13113,fork,reuseaddr,bind=0.0.0.0", "TCP:127.0.0.1:3113"]
+    healthcheck:
+      test: ["CMD-SHELL", "socat /dev/null TCP:127.0.0.1:13113 || exit 1"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+
+volumes:
+  agentmemory-data:
