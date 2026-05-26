@@ -2,7 +2,7 @@
 PR title format: AGM-N [TARGET] Imperative description
 Examples:
   AGM-12 [MAIN] Add OpenTelemetry tracing
-  AGM-12 [DEV]  Add OpenTelemetry tracing
+  AGM-12 [DEV] Add OpenTelemetry tracing
 -->
 
 ## Description
@@ -31,7 +31,7 @@ Examples:
 
 | PR | Branch | Description |
 |----|--------|-------------|
-| #  | `feature/AGM-N` → `main` | This PR |
+| #  | `feature/AGM-N` -> `main` | This PR |
 
 ## Jira
 

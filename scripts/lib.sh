@@ -13,7 +13,7 @@ compose() {
   docker compose -f "$COMPOSE_FILE" "$@"
 }
 
-# Secret from /data/.hmac — strip newline (docker exec often adds trailing \n)
+# Strip docker exec line endings from the HMAC secret.
 read_agentmemory_secret() {
   compose exec -T agentmemory cat /data/.hmac 2>/dev/null | tr -d '\n\r' || true
 }
