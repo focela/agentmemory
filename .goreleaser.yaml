@@ -1,0 +1,53 @@
+version: 2
+
+project_name: agentmemory
+
+# Skip binary builds: this project ships a Docker image (see publish.yml).
+# Used only for changelog generation and release creation; not for builds.
+builds:
+  - skip: true
+
+changelog:
+  disable: false
+  use: github
+  sort: asc
+
+  groups:
+    - title: Features
+      regexp: "^.*feat[(\\w)]*:+.*$"
+      order: 0
+    - title: Bug Fixes
+      regexp: "^.*fix[(\\w)]*:+.*$"
+      order: 1
+    - title: Enhancements
+      regexp: "^.*(perf|refactor)[(\\w)]*:+.*$"
+      order: 2
+    - title: Build process updates
+      regexp: ^.*?(build|ci)(\(.+\))??!?:.+$
+      order: 3
+    - title: Documentation updates
+      regexp: ^.*?docs?(\(.+\))??!?:.+$
+      order: 4
+    - title: Maintenance
+      regexp: ^.*?chore(\(.+\))??!?:.+$
+      order: 5
+    - title: Others
+      order: 999
+
+release:
+  github:
+    owner: focela
+    name: agentmemory
+
+  # Mark as prerelease when tag has a SemVer prerelease suffix (e.g. -rc.1).
+  prerelease: auto
+
+  # Append link to the published Docker image after the changelog.
+  footer: |
+    ## Docker image
+
+    ```
+    docker pull ghcr.io/focela/agentmemory:{{ .Version }}
+    ```
+
+    Multi-arch (linux/amd64, linux/arm64) image is published by `publish.yml`.
