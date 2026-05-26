@@ -293,6 +293,16 @@ After editing `docker/.env.server`: `make down && make up`.
 
 ---
 
+## Architecture
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for system layout, component diagram, and data flow.
+
+## Troubleshooting
+
+See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for common deployment and runtime issues.
+
+---
+
 ## License
 
 [LICENSE](LICENSE)
