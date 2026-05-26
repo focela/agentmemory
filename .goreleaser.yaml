@@ -9,7 +9,9 @@ builds:
 
 changelog:
   disable: false
-  use: github
+  # Use git log; the GitHub compare API needs a previous tag and would
+  # fail on the first release.
+  use: git
   sort: asc
 
   # Match Conventional Commits with optional scope and breaking-change marker.
