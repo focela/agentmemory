@@ -1,39 +1,25 @@
-# Changelog
+# Agentmemory Changelog
 
-All notable changes to this project are documented in this file.
+## v0.1.0
 
-This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
-and uses [Conventional Commits](https://www.conventionalcommits.org).
+### Features
 
-## Unreleased
+- feat(docker): add docker compose deploy stack ([#1](https://github.com/focela/agentmemory/pull/1))
+- feat(scripts): add makefile and lifecycle scripts ([#3](https://github.com/focela/agentmemory/pull/3))
 
-### Added
+### Build process updates / CI
 
-- Docker Compose deployment stack with `agentmemory` and `viewer-proxy`
-  services, first-boot HMAC secret generation, and daily log rotation
-  ([#1](https://github.com/focela/agentmemory/pull/1)).
-- Makefile entry points for `up`, `down`, `logs`, and `secret`, backed by
-  lifecycle scripts with health checks and log rotation
-  ([#3](https://github.com/focela/agentmemory/pull/3)).
-- MCP server configuration template in `.mcp.json.example`
-  ([#5](https://github.com/focela/agentmemory/pull/5)).
-- English and Vietnamese README files for Docker Compose setup, MCP client
-  configuration, and port references
-  ([#7](https://github.com/focela/agentmemory/pull/7)).
-- Community files: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and
-  `SECURITY.md` ([#7](https://github.com/focela/agentmemory/pull/7)).
-- GitHub issue templates, pull request template, and CODEOWNERS
-  ([#13](https://github.com/focela/agentmemory/pull/13)).
-- Architecture and troubleshooting guides
-  ([#15](https://github.com/focela/agentmemory/pull/15)).
-- CI checks for ShellCheck, Hadolint, Docker Compose validation, and Docker
-  image builds ([#9](https://github.com/focela/agentmemory/pull/9)).
-- Docker image publish workflow with multi-architecture builds, GHCR publish,
-  and provenance attestation
-  ([#11](https://github.com/focela/agentmemory/pull/11)).
+- ci(github): add lint and build checks ([#9](https://github.com/focela/agentmemory/pull/9))
+- ci(github): add docker image publish workflow ([#11](https://github.com/focela/agentmemory/pull/11))
+- ci(github): add goreleaser release automation ([#19](https://github.com/focela/agentmemory/pull/19))
 
-### Changed
+### Documentation updates
 
-- Expanded `.gitignore` for local MCP config, Docker env files, Claude Code
-  workspace files, logs, and agentmemory runtime data
-  ([#5](https://github.com/focela/agentmemory/pull/5)).
+- docs(community): add readme and health files ([#7](https://github.com/focela/agentmemory/pull/7))
+- docs(github): add templates and codeowners ([#13](https://github.com/focela/agentmemory/pull/13))
+- docs(guides): add architecture and troubleshooting ([#15](https://github.com/focela/agentmemory/pull/15))
+
+### Maintenance
+
+- chore(config): update gitignore, add mcp template ([#5](https://github.com/focela/agentmemory/pull/5))
+- chore(release-prep): doc restructure and cleanup ([#17](https://github.com/focela/agentmemory/pull/17))
