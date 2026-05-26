@@ -3,12 +3,12 @@ set -euo pipefail
 source "$(dirname "$0")/lib.sh"
 
 if ! command -v docker >/dev/null 2>&1; then
-  error "Docker not found — install: https://docs.docker.com/get-docker/"
+  error "Docker not found. Install: https://docs.docker.com/get-docker/"
   exit 1
 fi
 
 if ! command -v curl >/dev/null 2>&1; then
-  error "curl not found — install curl before running make up"
+  error "curl not found. Install curl before running make up"
   exit 1
 fi
 
@@ -31,9 +31,9 @@ for _ in $(seq 1 60); do
 done
 
 if curl -fsS http://127.0.0.1:3111/agentmemory/livez >/dev/null 2>&1; then
-  ok "Server ready — Viewer: http://localhost:3113"
+  ok "Server ready. Viewer: http://localhost:3113"
 else
-  error "server not ready — run: make logs"
+  error "server not ready. Run: make logs"
   exit 1
 fi
 
@@ -42,15 +42,14 @@ SECRET="$(read_agentmemory_secret)"
 if [ -n "$SECRET" ]; then
   echo "AGENTMEMORY_SECRET=$SECRET"
 else
-  info "secret not yet available — run: make secret"
+  info "secret not yet available. Run: make secret"
 fi
 
-# Daily log rotation — one file per day, retained for 14 days
+# Write one log file per day and keep 14 days.
 LOG_DIR="$ROOT/logs"
 PID_FILE="$LOG_DIR/.log.pid"
 mkdir -p "$LOG_DIR"
 
-# Remove log files older than 14 days
 find "$LOG_DIR" -name 'agentmemory-*.log' -mtime +14 -delete 2>/dev/null || true
 
 # Stop previous log watcher if still running
@@ -63,7 +62,7 @@ if [ -f "$PID_FILE" ]; then
   rm -f "$PID_FILE"
 fi
 
-# Wrapper restarts docker logs at midnight to write to the correct day's file
+# Restart docker logs at midnight so each day has its own file.
 nohup bash -c "
   while true; do
     TODAY=\$(date '+%Y-%m-%d')

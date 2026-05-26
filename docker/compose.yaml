@@ -6,14 +6,14 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
-    # Localhost only — remote access via Nginx (HTTPS) or SSH tunnel.
-    # To expose publicly: change to "3111:3111" (requires AGENTMEMORY_SECRET + firewall).
+    # Bind to localhost; use Nginx HTTPS or SSH for remote access.
+    # Public access needs "3111:3111", AGENTMEMORY_SECRET, and a firewall.
     ports:
       - "127.0.0.1:3111:3111"
       - "127.0.0.1:3113:13113"
     volumes:
       - agentmemory-data:/data
-    # LLM provider config. Created by make up; required: false needs Compose 2.24+.
+    # LLM config is optional; required: false needs Docker Compose 2.24+.
     # Manual: cp config/server.env.example docker/.env.server
     env_file:
       - path: .env.server
