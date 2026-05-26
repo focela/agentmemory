@@ -26,6 +26,20 @@ You will receive an acknowledgement within 3 business days. We aim to provide
 a status update within 7 days and a fix or mitigation within 30 days,
 depending on severity.
 
+## Sensitive Data
+
+Do not commit secrets, local environment files, or runtime logs.
+
+Examples include:
+
+- `.env`, `.env.*`, `docker/.env`, and `docker/.env.server`
+- `.mcp.json` and `.cursor/mcp.json`
+- HMAC secrets from `/data/.hmac` or `make secret`
+- Files under `logs/`, except `logs/.gitkeep`
+
+If sensitive data is committed, rotate the affected secret and report the
+incident through the private vulnerability reporting process above.
+
 ## Disclosure Policy
 
 We follow coordinated disclosure:

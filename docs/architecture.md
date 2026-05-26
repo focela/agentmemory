@@ -12,9 +12,9 @@ flowchart LR
     MCP["MCP client npx<br/>@agentmemory/mcp"]
   end
 
-  subgraph STACK["agentmemory stack — Docker Compose"]
+  subgraph STACK["agentmemory stack - Docker Compose"]
     AM["agentmemory<br/>Node.js 22<br/>:3111 REST API<br/>:3113 viewer (loopback)"]
-    VP["viewer-proxy<br/>alpine/socat<br/>:13113 → :3113"]
+    VP["viewer-proxy<br/>alpine/socat<br/>:13113 to :3113"]
     VOL[("Volume<br/>agentmemory-data<br/>/data/.hmac<br/>/data/store")]
   end
 
@@ -42,7 +42,7 @@ Node.js 22 process running `@agentmemory/agentmemory`. Responsible for:
 - HMAC secret generation on first boot, stored at `/data/.hmac` (mode 0600)
 - Persistent state under `/data/store`
 
-Runtime entrypoint chain: `tini → entrypoint.sh → gosu agentmemory → node`.
+Runtime entrypoint chain: `tini -> entrypoint.sh -> gosu agentmemory -> node`.
 
 ### `viewer-proxy` (container)
 
@@ -59,8 +59,8 @@ same network namespace.
 Named Docker volume mounted at `/data` inside the `agentmemory` container.
 Contents:
 
-- `/data/.hmac` — HMAC secret, generated once on first boot
-- `/data/store/` — memory store data files
+- `/data/.hmac`: HMAC secret, generated once on first boot
+- `/data/store/`: memory store data files
 
 Volume persistence is required for memory continuity. Deleting the volume
 regenerates the HMAC secret and erases all stored memory.
@@ -103,9 +103,9 @@ traffic is required.
 
 Both containers declare healthchecks:
 
-- `agentmemory` — `curl /agentmemory/livez` every 30 s, start period 30 s,
+- `agentmemory`: `curl /agentmemory/livez` every 30 s, start period 30 s,
   3 retries
-- `viewer-proxy` — `socat /dev/null TCP:127.0.0.1:13113` every 30 s
+- `viewer-proxy`: `socat /dev/null TCP:127.0.0.1:13113` every 30 s
 
 The `viewer-proxy` `depends_on.agentmemory.condition` is set to
 `service_healthy`, so it starts only after `agentmemory` reports healthy.

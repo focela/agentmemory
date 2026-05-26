@@ -1,6 +1,6 @@
 #!/bin/sh
-# agentmemory first-boot entrypoint (deploy template).
-# Binds 0.0.0.0, persists data under /data, generates HMAC secret on first boot.
+# First boot prepares /data and creates the HMAC secret.
+# The HTTP worker binds all interfaces inside the container.
 
 set -eu
 
@@ -14,7 +14,7 @@ III_CONFIG="/opt/agentmemory/node_modules/@agentmemory/agentmemory/dist/iii-conf
 mkdir -p "$DATA_DIR"
 chown -R "$RUN_AS" "$DATA_DIR"
 
-# Build CORS origins YAML list from comma-separated env var (or use defaults)
+# Convert comma-separated CORS origins to a YAML list.
 CORS_DEFAULTS="http://localhost:3111,http://localhost:3113,http://127.0.0.1:3111,http://127.0.0.1:3113"
 CORS_YAML=$(printf '%s\n' "${AGENTMEMORY_CORS_ORIGINS:-$CORS_DEFAULTS}" \
   | tr ',' '\n' \

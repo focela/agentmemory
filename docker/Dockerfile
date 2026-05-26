@@ -1,11 +1,5 @@
-# Based on the official template: github.com/rohitg00/agentmemory/deploy/coolify
-#
-# Supply chain hardening (optional for production):
-#   Pin base image by digest instead of tag to prevent mutable tag attacks.
-#   Get digest:
-#     docker pull node:22-slim
-#     docker inspect node:22-slim --format '{{index .RepoDigests 0}}'
-#   Example: FROM node:22-slim@sha256:<digest>
+# Based on https://github.com/rohitg00/agentmemory/tree/main/deploy/coolify
+# In production, pin the base image digest so the tag cannot change.
 ARG III_VERSION=0.11.2
 
 FROM iiidev/iii:${III_VERSION} AS iii-image
@@ -16,8 +10,7 @@ ARG AGENTMEMORY_VERSION=0.9.12
 ARG III_VERSION=0.11.2
 ARG III_SDK_VERSION=0.11.2
 
-# Security updates for system packages come from base image refresh.
-# Pinning Debian package versions would break on each upstream refresh.
+# Base image refresh provides security updates; pinning breaks on refresh.
 # hadolint ignore=DL3008
 RUN apt-get update \
  && apt-get install -y --no-install-recommends openssl ca-certificates tini gosu curl \
