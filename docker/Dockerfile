@@ -16,6 +16,9 @@ ARG AGENTMEMORY_VERSION=0.9.12
 ARG III_VERSION=0.11.2
 ARG III_SDK_VERSION=0.11.2
 
+# Security updates for system packages come from base image refresh.
+# Pinning Debian package versions would break on each upstream refresh.
+# hadolint ignore=DL3008
 RUN apt-get update \
  && apt-get install -y --no-install-recommends openssl ca-certificates tini gosu curl \
  && rm -rf /var/lib/apt/lists/*
