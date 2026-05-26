@@ -291,6 +291,16 @@ Sau khi sửa `docker/.env.server`: `make down && make up`.
 
 ---
 
+## Architecture
+
+Xem [ARCHITECTURE.md](ARCHITECTURE.md) để biết cấu trúc hệ thống, sơ đồ component và data flow.
+
+## Troubleshooting
+
+Xem [TROUBLESHOOTING.md](TROUBLESHOOTING.md) để xử lý các vấn đề thường gặp khi triển khai và runtime.
+
+---
+
 ## License
 
 [LICENSE](LICENSE)
