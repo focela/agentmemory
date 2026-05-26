@@ -1,0 +1,86 @@
+name: Bug report
+description: Report a defect in agentmemory
+labels: ["type: bug", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before opening, please search existing issues to avoid duplicates.
+        For security vulnerabilities, see [SECURITY.md](https://github.com/focela/agentmemory/blob/main/SECURITY.md).
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of the defect.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Numbered steps that reliably reproduce the defect.
+      placeholder: |
+        1. Run `make up`
+        2. Open http://localhost:3113
+        3. Observe error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: input
+    id: docker-version
+    attributes:
+      label: Docker version
+      description: Output of `docker --version`
+      placeholder: "Docker version 27.3.1, build ce12230"
+    validations:
+      required: true
+
+  - type: input
+    id: compose-version
+    attributes:
+      label: Docker Compose version
+      description: Output of `docker compose version`
+      placeholder: "Docker Compose version v2.30.3"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Linux
+        - macOS
+        - Windows (WSL2)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Output of `make logs` or relevant excerpt. Wrap in code fences.
+      render: shell
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Anything else that may help diagnose the issue.

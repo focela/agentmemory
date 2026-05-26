@@ -1,0 +1,42 @@
+name: Feature request
+description: Propose a new capability or enhancement
+labels: ["type: feature", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before opening, please search existing issues and discussions.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What use case is currently unsupported or inefficient?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the change in technical terms (API, config, behavior).
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches evaluated and reasons for rejection.
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Compatibility and migration
+      description: Breaking changes, deprecations, or migration steps required.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Links to related issues, prior art, or references.
