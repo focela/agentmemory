@@ -1,68 +1,44 @@
-#-----------------------------------------------------------------------------
-# Git Ignore Configuration
-#
-# Function: Excludes system files, build artifacts, and sensitive data
-# Assumption: Mixed OS environments and multiple IDEs in use
-# Consequence: Prevents repository bloat and accidental secret exposure
-#-----------------------------------------------------------------------------
-
-
-
-#-----------------------------------------------------------------------------
-# OPERATING SYSTEM FILES
-#-----------------------------------------------------------------------------
-# macOS system files that auto-generate during file operations
+# OS files
+$RECYCLE.BIN/
+*~
 ._*
 .apdisk
 .AppleDB
 .AppleDesktop
 .AppleDouble
 .com.apple.timemachine.donotpresent
+.directory
 .DocumentRevisions-V100
 .DS_Store
 .fseventsd
+.fuse_hidden*
 .LSOverride
+.nfs*
 .Spotlight-V100
 .TemporaryItems
+.Trash-*
 .Trashes
 .VolumeIcon.icns
+Desktop.ini
+ehthumbs.db
 Icon
 Network Trash Folder
 Temporary Items
-
-# Windows thumbnail cache files
-$RECYCLE.BIN/
-Desktop.ini
-ehthumbs.db
 Thumbs.db
 
-# Linux temporary files
-*~
-.directory
-.fuse_hidden*
-.nfs*
-.Trash-*
-
-#-----------------------------------------------------------------------------
-# IDE AND EDITOR FILES
-#-----------------------------------------------------------------------------
-# Atom editor configuration files
-.ftpconfig
-.sftpconfig
-
-# Emacs editor temporary and backup files
+# Editors and IDEs
 *.elc
+*.iml
+*.ipr
+*.iws
+*.sublime-project
+*.sublime-workspace
 .\#*
 /.emacs.desktop
 /.emacs.desktop.lock
 \#*\#
-auto-save-list
-tramp
-
-# IntelliJ IDEA and JetBrains IDE configuration files
-*.iml
-*.ipr
-*.iws
+.claude/
+.ftpconfig
 .history/
 .idea/
 .idea/$CACHE_FILE$
@@ -90,155 +66,112 @@ tramp
 .idea/misc.xml
 .idea/replstate.xml
 .idea_modules/
-modules.xml
-out/
-
-# PhpStorm metadata and configuration files
+.netrwhist
 .phpstorm.meta.php
 .phpstorm.meta.php/
+.sftpconfig
 
-# Sublime Text project and workspace files
-*.sublime-project
-*.sublime-workspace
-
-# Vim and Neovim session and history files
-.netrwhist
-Session.vim
-
-# VS Code configs with selective inclusion
+# Keep shared VS Code files only.
+.vscode/*
 !.vscode/extensions.json
 !.vscode/launch.json
 !.vscode/settings.json
 !.vscode/tasks.json
-.vscode/
 
-# Claude Code local workspace
-.claude/
+auto-save-list
+modules.xml
+out/
+Session.vim
+tramp
 
-#-----------------------------------------------------------------------------
-# THIRD-PARTY PLUGIN FILES
-#-----------------------------------------------------------------------------
-# Third-party tool configs that may contain API keys or preferences
+# Third-party tools
 atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 crashlytics-build.properties
 crashlytics.properties
 fabric.properties
 
-#-----------------------------------------------------------------------------
-# SECURITY AND CONFIGURATION
-#-----------------------------------------------------------------------------
-# Environment files with sensitive data
-.env
-.env.*
-.env.development
-.env.local
-.env.production
-.env.staging
-docker/.env
-docker/.env.server
-!.env.example
-
-# MCP configs with API keys
-.cursor/mcp.json
-.mcp.json
-
-# Files containing secrets that must not be committed
+# Environment and secrets
 *.crt
 *.key
 *.p12
 *.pem
 *.pfx
+.cursor/mcp.json
+.env
+.env.*
+!.env.example
+.env.development
+.env.local
+.env.production
+.env.staging
+.mcp.json
 .well-known/
+docker/.env
+docker/.env.server
 secrets/
 
-#-----------------------------------------------------------------------------
-# LOGS AND TEMPORARY FILES
-#-----------------------------------------------------------------------------
-# Runtime files that grow large and change frequently
+# Runtime data and logs
 *.log
 *.temp
 *.tmp
-
-# Application writable runtime data
+logs/*
+!logs/.gitkeep
+uploads/*
+!uploads/.gitkeep
 writable/*
 !writable/.gitkeep
 
-# Container logs export
-logs/*
-!logs/.gitkeep
-
-# Application upload runtime data
-uploads/*
-!uploads/.gitkeep
-
-#-----------------------------------------------------------------------------
-# CONTAINER AND ORCHESTRATION
-#-----------------------------------------------------------------------------
-# Container configs that may contain sensitive cluster information
+# Infrastructure
 .kube/
-
-# Terraform infrastructure configuration and state files
+.terraform/
+.terraform.lock.hcl
+.terraformrc
 *.tfstate
 *.tfstate.*
-.terraform.lock.hcl
-.terraform/
-.terraformrc
 terraform.rc
 
-#-----------------------------------------------------------------------------
-# BUILD ARTIFACTS AND RUNTIME FILES
-#-----------------------------------------------------------------------------
-# Backup and version control files
+# Build outputs and archives
 *.backup
-*.old
-*.orig
-
-# Compiled application files
 *.class
 *.ear
 *.jar
 *.nar
+*.old
+*.orig
 *.rar
 *.war
 *.zip
-
-# Virtual machine crash logs and replay files
 hs_err_pid*
 replay_pid*
 
-#-----------------------------------------------------------------------------
-# DATABASE FILES
-#-----------------------------------------------------------------------------
-# Database files
+# Databases
 *.db
 *.sqlite
 *.sqlite3
 data/mysql/
 
-#-----------------------------------------------------------------------------
-# DEPENDENCIES AND ENVIRONMENTS
-#-----------------------------------------------------------------------------
-# Package manager dependencies
-bower_components/
-node_modules/
-
-# Virtual environments
+# Dependencies and environments
+.agentmemory/
 .venv/
+bower_components/
 env/
+node_modules/
 venv/
 
-# agentmemory local runtime
-.agentmemory/
-
-#-----------------------------------------------------------------------------
-# TESTING AND COVERAGE
-#-----------------------------------------------------------------------------
-# Test results and coverage reports
-*.lcov
+# Test output
 .coverage
 .nyc_output
 .pytest_cache/
 .tox/
+*.lcov
 coverage/
 test-results/
+
+# Personal LLM and IDE tooling (not part of product)
+.claude-plugin/
+.cursor/
+/CLAUDE.md
+/CURSOR.md
+/EXAMPLES.md
+/skills/

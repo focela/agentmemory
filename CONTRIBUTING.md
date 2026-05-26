@@ -1,24 +1,38 @@
 # Contributing
 
-Thank you for your interest in contributing to agentmemory. This document
-describes the development workflow, commit conventions, and review process.
+Thank you for your interest in contributing to agentmemory. This guide covers
+the public development workflow, commit format, and pull request expectations.
 
-## Development setup
+## Development Setup
 
-1. Install Docker Engine and Docker Compose v2 (≥ 2.24)
-2. Clone the repository and copy the example env files:
+1. Install Docker Engine and Docker Compose v2.
+2. Clone the repository:
    ```bash
    git clone https://github.com/focela/agentmemory.git
    cd agentmemory
+   ```
+3. Create local environment files:
+   ```bash
    cp .env.example docker/.env
    cp config/server.env.example docker/.env.server
    ```
-3. Start the stack:
+4. Start the stack:
    ```bash
    make up
    ```
 
-## Branch naming
+## Before You Start
+
+- Search existing issues and pull requests before opening a new one.
+- Keep changes focused on one problem or feature.
+- Include documentation updates when behavior or configuration changes.
+- Use small pull requests when possible.
+
+## Branches
+
+Use short-lived branches from the latest `main` branch.
+
+Branch naming follows the Jira ticket number (`AGM-N`):
 
 | Pattern | Use case |
 |---------|----------|
@@ -29,64 +43,80 @@ describes the development workflow, commit conventions, and review process.
 
 `N` is the Jira ticket number. `M` increments per QA test cycle on `develop`.
 
-## Commit message convention
+## Commit Messages
 
 This project follows [Conventional Commits](https://www.conventionalcommits.org).
 
-```
+```text
 <type>(<scope>): <description>
-
-<body>
-
-<footer>
 ```
 
-Rules:
-- Title is lowercase
-- Maximum 50 characters in title (including type, scope, colon, spaces)
-- Body wrapped at 72 characters
-- AI-assisted commits include `Co-Authored-By: Claude <model> <email>` trailer
+Examples:
 
-Allowed types: `feat`, `fix`, `docs`, `refactor`, `perf`, `test`, `chore`, `build`, `ci`.
-
-## Pull request process
-
-1. Branch from latest `main` (`git fetch origin && git reset --hard origin/main`)
-2. Push to remote and open a PR targeting `main`
-3. Cherry-pick the commit onto a new `feature/AGM-N_1` branch from `develop`
-   and open a second PR targeting `develop` for QA testing
-4. Address Codex review comments; iterate until no major issues remain
-5. Request review from a maintainer
-6. After approval, the PR is squash-merged
-
-### PR title format
-
+```text
+feat(docker): add health check
+fix(scripts): handle missing secret file
+docs(readme): add deployment guide link
 ```
+
+Allowed types:
+
+- `build`
+- `chore`
+- `ci`
+- `docs`
+- `feat`
+- `fix`
+- `perf`
+- `refactor`
+- `test`
+
+## Pull Requests
+
+Each feature is delivered through two pull requests:
+
+1. `feature/AGM-N` to `main` (production target).
+2. `feature/AGM-N_M` to `develop` (cherry-picked from the first PR for QA).
+
+If QA finds a bug, fix on `feature/AGM-N`, then create
+`feature/AGM-N_{M+1}` and cherry-pick the fix to `develop` again.
+
+Before opening a pull request:
+
+1. Rebase the latest target branch (`main` or `develop`).
+2. Run the relevant local checks.
+3. Verify the stack still starts when deployment files change.
+4. Update documentation for user-facing changes.
+
+PR title format:
+
+```text
 AGM-N [TARGET] Imperative description
 ```
 
 Examples:
+
 - `AGM-12 [MAIN] Add OpenTelemetry tracing`
 - `AGM-12 [DEV] Add OpenTelemetry tracing`
 
-### PR body
+Each pull request should include:
 
-Each PR must include these sections:
-- `## Description` — one-paragraph summary
-- `## Changes` — bulleted list of code-level changes
-- `## Testing` — checklist of manual verification steps
-- `## Notes` — implementation notes, compatibility considerations
-- `## Related PRs` — cross-references to main and develop PRs
-- `## Jira` — link to the ticket
+- A short description of the change.
+- A list of notable implementation details.
+- Manual or automated test results.
+- A cross-reference to the matching main or develop PR.
+- A link to the Jira ticket.
 
-## Code review
+## Code Review
 
-- All PRs require at least one approval from a maintainer
-- Codex automated review runs on every push
-- All review threads must be resolved before merge
-- Squash merge is the default; merge commits are allowed on `develop` only
+- At least one maintainer approval is required before merge.
+- Address review comments or explain why a change is not needed.
+- Keep follow-up work explicit in the pull request notes.
+- Squash merge is the default.
 
-## Reporting issues
+## Reporting Issues
 
-For bugs and feature requests, open an issue using the appropriate template.
-For security vulnerabilities, see [SECURITY.md](SECURITY.md) instead.
+Use GitHub issues for bugs and feature requests. Include enough detail to
+reproduce the problem when reporting a bug.
+
+For security vulnerabilities, follow [SECURITY.md](SECURITY.md).
