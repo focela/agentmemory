@@ -6,7 +6,7 @@ body:
     attributes:
       value: |
         Before opening, please search existing issues to avoid duplicates.
-        For security vulnerabilities, see [SECURITY.md](../blob/main/SECURITY.md).
+        For security vulnerabilities, see [SECURITY.md](https://github.com/focela/agentmemory/blob/main/SECURITY.md).
 
   - type: textarea
     id: description
