@@ -19,9 +19,12 @@ Docker Compose prefixes volume names with the project name. With the default
 ```bash
 make down
 
-# Resolve destination from docker/.env; fall back to data/ at the repo root.
+# Resolve destination from docker/.env; fall back to ../data (default).
+# Relative paths in docker/.env are resolved from docker/ (the Compose file
+# directory), so prepend docker/ before calling realpath.
 DEST=$(grep -s '^AGENTMEMORY_DATA_DIR=' docker/.env | cut -d= -f2-)
-DEST="${DEST:-data}"
+DEST="${DEST:-../data}"
+[[ "$DEST" != /* ]] && DEST="docker/$DEST"
 mkdir -p "$DEST"
 
 docker run --rm \
