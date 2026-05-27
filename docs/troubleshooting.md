@@ -2,6 +2,45 @@
 
 Resolution steps for common deployment and runtime issues.
 
+## Migrating from Named Volume to Bind Mount (v0.1.0 → v0.1.1)
+
+**Symptom:** After pulling v0.1.1, `make up` starts with an empty memory store
+and a new secret, because data was stored in the `agentmemory-data` Docker named
+volume which is no longer mounted.
+
+**Resolution:** Copy data from the named volume into the bind-mount directory
+before starting the stack.
+
+Docker Compose prefixes volume names with the project name. With the default
+`COMPOSE_PROJECT_NAME=agentmemory` in `docker/.env`, the actual volume name is
+`agentmemory_agentmemory-data`. If you changed `COMPOSE_PROJECT_NAME`, replace
+`agentmemory_agentmemory-data` with `<your-project-name>_agentmemory-data`.
+
+```bash
+make down
+mkdir -p data
+
+docker run --rm \
+  -v agentmemory_agentmemory-data:/source:ro \
+  -v "$(pwd)/data":/dest \
+  alpine sh -c "cp -a /source/. /dest/"
+
+make up
+```
+
+Verify the secret is unchanged:
+
+```bash
+make secret
+```
+
+If the secret matches what was in your MCP client config, the migration was
+successful. The named volume can be removed afterwards:
+
+```bash
+docker volume rm agentmemory_agentmemory-data
+```
+
 ## Container Fails to Start
 
 **Symptom:** `make up` exits with non-zero status or the container restarts.
@@ -22,9 +61,9 @@ docker compose -f docker/compose.yaml ps
   Start Docker Desktop or run `systemctl start docker`.
 - Required environment variables are missing.
   Check `docker/.env.server` for `OPENAI_API_KEY` and one LLM provider key.
-- The Docker volume has invalid permissions.
-  Recreate it with `docker volume rm agentmemory-data`. This deletes stored
-  memory data.
+- The data directory has invalid permissions.
+  Stop the stack, fix permissions on the host data directory, then restart:
+  `make down && sudo chown -R $(id -u):$(id -g) data/ && make up`
 
 ## Health Check Times Out
 
@@ -62,7 +101,7 @@ cat .mcp.json | jq '.mcpServers.agentmemory'
 
 - `REPLACE_ME` is still present in the MCP config.
   Replace it with the value from `make secret`.
-- The secret changed after a volume reset.
+- The secret changed after the data directory was replaced or cleared.
   Run `make secret` again and update every MCP client config.
 - The MCP client was not restarted.
   Quit and reopen the client.
@@ -86,7 +125,7 @@ docker compose -f docker/compose.yaml exec agentmemory cat /data/.hmac
   Run `make up` first.
 - The container is still starting.
   Wait for the health check to pass, then retry.
-- `/data` is empty after a volume reset.
+- The data directory is empty or was cleared on the host.
   Restart the container so it can generate a new secret.
 
 ## LLM Provider Returns an Error

@@ -152,8 +152,8 @@ Replace `<secret>` with the output of `make secret`.
 }
 ```
 
-If the Docker volume is reset, the server creates a new secret. Update the
-secret in `.mcp.json` and `~/.claude/settings.json`.
+If the data directory is cleared on the host, the server generates a new
+secret. Update it in `.mcp.json` and `~/.claude/settings.json`.
 
 ## Cursor
 
