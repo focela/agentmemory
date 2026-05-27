@@ -13,7 +13,7 @@ Desktop.
 ## Tính năng
 
 - Docker Compose stack cho agentmemory.
-- Docker volume để lưu state và dữ liệu memory.
+- Bind mount trên filesystem host để lưu state và dữ liệu memory.
 - Viewer UI qua local proxy.
 - MCP client template cho Cursor, Claude Code, và Claude Desktop.
 - Claude Code hooks tùy chọn để tự động ghi memory.

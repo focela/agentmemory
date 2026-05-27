@@ -13,7 +13,7 @@ Desktop.
 ## Features
 
 - Docker Compose stack for agentmemory.
-- Persistent data volume for server state and memory data.
+- Bind mount on the host filesystem for persistent server state and memory data.
 - Viewer UI exposed through a local proxy.
 - MCP client templates for Cursor, Claude Code, and Claude Desktop.
 - Optional Claude Code hooks for automatic memory capture.
@@ -95,7 +95,7 @@ Supported provider keys:
 
 | Template | Runtime file | Purpose |
 |----------|--------------|---------|
-| [`.env.example`](.env.example) | `docker/.env` | Docker Compose project name |
+| [`.env.example`](.env.example) | `docker/.env` | Docker Compose project name, data directory path |
 | [`config/server.env.example`](config/server.env.example) | `docker/.env.server` | API keys, CORS, and tool settings |
 
 After editing `docker/.env.server`, restart the stack:

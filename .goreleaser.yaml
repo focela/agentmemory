@@ -9,9 +9,9 @@ builds:
 
 changelog:
   disable: false
-  # Use git log; the GitHub compare API needs a previous tag and would
-  # fail on the first release.
-  use: git
+  # GitHub API provides author attribution and a Contributors section.
+  # Requires a previous tag to exist; v0.1.0 satisfies this constraint.
+  use: github
   sort: asc
 
   # Match Conventional Commits with optional scope and breaking-change marker.
@@ -23,17 +23,14 @@ changelog:
       regexp: ^.*?fix(\(.+\))??!?:.+$
       order: 1
     - title: Enhancements
-      regexp: ^.*?(perf|refactor)(\(.+\))??!?:.+$
+      regexp: ^.*?(perf|refactor|chore)(\(.+\))??!?:.+$
       order: 2
-    - title: Build process updates
+    - title: Build process updates / CI
       regexp: ^.*?(build|ci)(\(.+\))??!?:.+$
       order: 3
     - title: Documentation updates
       regexp: ^.*?docs?(\(.+\))??!?:.+$
       order: 4
-    - title: Maintenance
-      regexp: ^.*?chore(\(.+\))??!?:.+$
-      order: 5
     - title: Others
       order: 999
 
