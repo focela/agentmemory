@@ -18,11 +18,15 @@ Docker Compose prefixes volume names with the project name. With the default
 
 ```bash
 make down
-mkdir -p data
+
+# Resolve destination from docker/.env; fall back to data/ at the repo root.
+DEST=$(grep -s '^AGENTMEMORY_DATA_DIR=' docker/.env | cut -d= -f2-)
+DEST="${DEST:-data}"
+mkdir -p "$DEST"
 
 docker run --rm \
   -v agentmemory_agentmemory-data:/source:ro \
-  -v "$(pwd)/data":/dest \
+  -v "$(realpath "$DEST")":/dest \
   alpine sh -c "cp -a /source/. /dest/"
 
 make up
