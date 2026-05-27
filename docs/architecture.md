@@ -15,7 +15,7 @@ flowchart LR
   subgraph STACK["agentmemory stack - Docker Compose"]
     AM["agentmemory<br/>Node.js 22<br/>:3111 REST API<br/>:3113 viewer (loopback)"]
     VP["viewer-proxy<br/>alpine/socat<br/>:13113 to :3113"]
-    VOL[("Volume<br/>agentmemory-data<br/>/data/.hmac<br/>/data/store")]
+    VOL[("Bind mount<br/>host: data/<br/>/data/.hmac<br/>/data/store")]
   end
 
   subgraph EXT[External providers]
@@ -54,10 +54,11 @@ publishes on `127.0.0.1:3113`.
 Uses `network_mode: service:agentmemory` so both containers share the
 same network namespace.
 
-### Volume `agentmemory-data`
+### Data directory
 
-Named Docker volume mounted at `/data` inside the `agentmemory` container.
-Contents:
+Bind mount from the host filesystem, mounted at `/data` inside the
+`agentmemory` container. Default host path: `data/` at the project root.
+Override with `AGENTMEMORY_DATA_DIR` in `docker/.env`. Contents:
 
 - `/data/.hmac`: HMAC secret, generated once on first boot
 - `/data/store/`: memory store data files

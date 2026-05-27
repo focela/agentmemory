@@ -1,5 +1,11 @@
 # Agentmemory Changelog
 
+## v0.1.1
+
+### Enhancements
+
+- chore(docker): replace volume with bind mount ([#22](https://github.com/focela/agentmemory/pull/22))
+
 ## v0.1.0
 
 ### Features
@@ -19,7 +25,7 @@
 - docs(github): add templates and codeowners ([#13](https://github.com/focela/agentmemory/pull/13))
 - docs(guides): add architecture and troubleshooting ([#15](https://github.com/focela/agentmemory/pull/15))
 
-### Maintenance
+### Enhancements
 
 - chore(config): update gitignore, add mcp template ([#5](https://github.com/focela/agentmemory/pull/5))
 - chore(release-prep): doc restructure and cleanup ([#17](https://github.com/focela/agentmemory/pull/17))

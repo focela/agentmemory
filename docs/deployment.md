@@ -194,7 +194,7 @@ See [mcp-clients.md](mcp-clients.md) for client-specific setup.
 
 | Template | Runtime file | Purpose |
 |----------|--------------|---------|
-| [`.env.example`](../.env.example) | `docker/.env` | Docker Compose project name |
+| [`.env.example`](../.env.example) | `docker/.env` | Docker Compose project name, data directory path |
 | [`config/server.env.example`](../config/server.env.example) | `docker/.env.server` | API keys and runtime settings |
 
 After editing `docker/.env.server`, restart the stack:

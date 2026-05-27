@@ -91,13 +91,17 @@ Before opening a pull request:
 PR title format:
 
 ```text
-AGM-N [TARGET] Imperative description
+[COMPANY] [TARGET] AGM-N Imperative description
 ```
+
+- `COMPANY`: the organization that owns the ticket (`Focela`, `VCBS`, etc.)
+- `TARGET`: the destination branch (`MAIN` or `DEV`)
 
 Examples:
 
-- `AGM-12 [MAIN] Add OpenTelemetry tracing`
-- `AGM-12 [DEV] Add OpenTelemetry tracing`
+- `[Focela] [MAIN] AGM-12 Add OpenTelemetry tracing`
+- `[Focela] [DEV] AGM-12 Add OpenTelemetry tracing`
+- `[VCBS] [MAIN] AGM-12 Add OpenTelemetry tracing`
 
 Each pull request should include:
 

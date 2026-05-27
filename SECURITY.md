@@ -58,7 +58,7 @@ The following are considered security issues:
 - HMAC secret exposure or weakening
 - Authentication or authorization bypass
 - Remote code execution in the container or host
-- Data exfiltration from the persistent volume
+- Data exfiltration from the bind-mount data directory
 - Vulnerabilities in container build or supply chain
 
 The following are out of scope:

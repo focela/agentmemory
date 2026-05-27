@@ -151,6 +151,9 @@ replay_pid*
 *.sqlite3
 data/mysql/
 
+# Bind-mount data directory (created by docker/compose.yaml)
+data/
+
 # Dependencies and environments
 .agentmemory/
 .venv/
