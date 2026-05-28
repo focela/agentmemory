@@ -5,7 +5,8 @@
       "args": ["-y", "@agentmemory/mcp"],
       "env": {
         "AGENTMEMORY_URL": "http://localhost:3111",
-        "AGENTMEMORY_SECRET": "REPLACE_ME"
+        "AGENTMEMORY_SECRET": "REPLACE_ME",
+        "AGENTMEMORY_PROJECT_NAME": "my-project"
       }
     }
   }

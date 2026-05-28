@@ -23,6 +23,11 @@ cp .mcp.json.example .mcp.json
 
 Edit `.mcp.json` and replace `REPLACE_ME` with the value from `make secret`.
 
+Set `AGENTMEMORY_PROJECT_NAME` to a short identifier for the project (e.g.
+`my-project`). All machines and sessions using the same name share the same
+memory pool. If omitted, the workspace path is used as the namespace, which
+means different machines will have separate memory even for the same project.
+
 Template: [`.mcp.json.example`](../.mcp.json.example)
 
 ### Hooks
