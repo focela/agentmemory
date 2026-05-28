@@ -23,6 +23,11 @@ cp .mcp.json.example .mcp.json
 
 Edit `.mcp.json` and replace `REPLACE_ME` with the value from `make secret`.
 
+Set `AGENTMEMORY_PROJECT_NAME` to a short identifier for the project (e.g.
+`my-project`). All machines and sessions using the same name share the same
+memory pool. If omitted, the workspace path is used as the namespace, which
+means different machines will have separate memory even for the same project.
+
 Template: [`.mcp.json.example`](../.mcp.json.example)
 
 ### Hooks
@@ -195,6 +200,75 @@ Add the MCP server to `claude_desktop_config.json`.
 ```
 
 Quit Claude Desktop completely, then open it again.
+
+### Additional MCP Servers
+
+Claude Desktop supports any MCP server alongside agentmemory.
+Keep the total number of active servers under 10 to preserve context window.
+
+Recommended servers:
+
+| Server | Purpose | API key required |
+|--------|---------|-----------------|
+| `sequential-thinking` | Step-by-step reasoning for complex tasks | No |
+| `context7` | Real-time library documentation lookup | No |
+| `github` | Read PRs, issues, and code from GitHub | Yes — GitHub PAT |
+| `filesystem` | Read and write files on the local machine | No |
+
+Add to `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "agentmemory": {
+      "command": "npx",
+      "args": ["-y", "@agentmemory/mcp"],
+      "env": {
+        "AGENTMEMORY_URL": "http://localhost:3111",
+        "AGENTMEMORY_SECRET": "<secret-from-make-secret>"
+      }
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"]
+    },
+    "github": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "ghcr.io/github/github-mcp-server"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<your-github-pat>"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/path/to/projects"
+      ]
+    }
+  }
+}
+```
+
+#### GitHub Personal Access Token
+
+1. Go to `https://github.com/settings/tokens/new`
+2. Set **Note**: `Claude Desktop MCP`
+3. Select scopes: `repo`, `read:org`, `read:user`
+4. Click **Generate token** and copy the value
+5. Replace `<your-github-pat>` in `claude_desktop_config.json`
+
+Replace `/path/to/projects` with the directory you want Claude to access,
+for example `/Users/<user>/projects` or `/var/www`.
 
 ## Multiple Projects
 
